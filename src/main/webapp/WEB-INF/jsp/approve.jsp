@@ -9,9 +9,7 @@
 <TITLE>Approve</TITLE>
 <% HttpSession sess=request.getSession();
 ResourceMaster resource = (ResourceMaster)sess.getAttribute("resource");
-ArrayList<String> calendarData=(ArrayList<String>)request.getAttribute("calendarData");
- int i=0;
-//String[] calendarData = (String[])request.getAttribute("calendarData");
+
 %>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -190,7 +188,6 @@ function populateTable(form) {
 		if (dayCounter <= howMany)
 			{
 			newC.innerHTML = dayCounter 
-			<%System.out.println(calendarData.get(i));%> 
 			dayCounter++
 			}
 		else
