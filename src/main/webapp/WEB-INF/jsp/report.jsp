@@ -1,0 +1,188 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@page import = "com.acc.entity.ResourceMaster"%>
+<html>
+<head>
+<title>Welcome to Attendance Tracker</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+	<style>
+	.btn-group-info .dropdown-menu {
+  background-color: #4ebbdb !important;
+}
+	</style>
+</head>
+<% HttpSession sess=request.getSession();
+ResourceMaster resource = (ResourceMaster)sess.getAttribute("resource");
+%>
+<body>
+
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#">Attendance-Tracker</a>
+			</div>
+			<ul class="nav navbar-nav">
+				<li><a href="redirect.htm?pageName=timesheet"><span
+						class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+						TimeSheets </a></li>
+				<li class="active"><a href="#"><span
+						class="glyphicon glyphicon-save-file" aria-hidden="true"></span>
+							Reports</a></li>
+							<li><a href="approve.htm"><span
+						class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+						Approve </a></li>
+			</ul>
+			<ul class="nav navbar-nav pull-right">
+	<li class="dropdown" id="logout">
+	
+	<a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogout"><span class="glyphicon glyphicon-user"></span>&nbsp${resource.employeeName}</a>
+	<div class="dropdown-menu">
+	<button type="button" class="btn btn-danger btn-block">Logout</button>
+	</div>
+	</li>
+	</ul>
+		</div>
+	</nav>
+
+	<div class="container">
+		<h2 align="center">Attendance-Tracker Reports</h2>
+	<form id = "reportForm" action = "generateReport.htm">
+		<div class="panel panel-info">
+			<div class="panel-heading" align="center">Monthly Reports</div>
+			<div class="panel-body">
+				<label for="month">Select Particular Month:</label>
+				<div class="form-group">
+					<div class='input-group date' id='monthPicker'>
+						<input type='text' class="form-control" name = "monthName" id = "monthName"/> <span
+							class="input-group-addon"> <span
+							class="glyphicon glyphicon-calendar"></span>
+						</span>
+					</div>
+				</div>
+
+			</div>
+			<div class="panel-footer">
+				<div class="btn-group btn-group-info">
+	  <button class="btn btn-info dropdown-toggle" type="submit">Generate Reports</button>
+	  </button>
+	 <!--  <ul class="dropdown-menu">
+		  <li><a href="#">Excel File</a></li>
+		  <li class="divider"></li>		  
+	  <li><a href="#">PDF File</a></li>
+	  </ul> -->
+  </div>
+			</div>
+		</div>
+
+		<div class="panel panel-info">
+			<div class="panel-heading" align="center">Fortnight Reports</div>
+			<div class="panel-body">
+				<label for="month">Select Starting Date:</label>
+				<div class="form-group">
+					<div class='input-group date' id='fortNightPickerStart'>
+						<input type='text' class="form-control" /> <span
+							class="input-group-addon"> <span
+							class="glyphicon glyphicon-calendar"></span>
+						</span>
+					</div>
+				</div>
+				<label for="month">Select Ending Date:</label>
+				<div class="form-group">
+					<div class='input-group date' id='fortNightPickerEnd'>
+						<input type='text' class="form-control" /> <span
+							class="input-group-addon"> <span
+							class="glyphicon glyphicon-calendar"></span>
+						</span>
+					</div>
+				</div>
+
+			</div>
+
+			<div class="panel-footer">
+			<div class="btn-group btn-group-info">
+				  <button class="btn btn-info dropdown-toggle" data-toggle="dropdown" type="button">Generate Reports</button>
+		  <ul class="dropdown-menu">
+		  <li><a href="#">Excel File</a></li>
+		  <li class="divider"></li>		  
+	  <li><a href="#">PDF File</a></li>
+	  </ul>
+	  </div>
+			</div>
+		</div>
+		<div class="panel panel-info">
+			<div class="panel-heading" align="center">Employee Reports</div>
+			<div class="panel-body">
+				<label for="month">Enterprise ID</label>
+				<div class="form-group">
+					<div class='input-group text' id='monthPicker'>
+						<input type='text' class="form-control" autocomplete="on"/> <span
+							class="input-group-addon"> <span
+							class="glyphicon glyphicon-user"></span>
+						</span>
+					</div>
+				</div>
+
+			</div>
+			<div class="panel-footer">
+				<div class="btn-group btn-group-info">
+	  <button class="btn btn-info dropdown-toggle" data-toggle="dropdown" type="button">Generate Reports</button>
+	  <ul class="dropdown-menu">
+		  <li><a href="#">Excel File</a></li>
+		  <li class="divider"></li>		  
+	  <li><a href="#">PDF File</a></li>
+	  </ul>
+	  </div>
+			</div>
+		</div>
+		</form>
+	</div>
+
+	<script type="text/javascript">
+			$(document).ready(function() {
+				$(function() {
+					$('#datetimepicker1').datetimepicker({
+						format : 'DD/MM/YYYY'
+					});
+				});
+				$(function() {
+					$('#monthPicker').datetimepicker({
+						viewMode: 'months',
+						format : 'MMMM,YYYY',
+						showTodayButton : true,
+					});
+				});
+				$(function() {
+					$('#fortNightPickerStart').datetimepicker({
+						viewMode: 'days',
+						format : 'DD/MM/YYYY',
+						showTodayButton : true,
+					});
+				});
+				$(function() {
+					$('#fortNightPickerEnd').datetimepicker({
+						viewMode: 'days',
+						format : 'DD/MM/YYYY',
+						showTodayButton : true,
+					});
+				});
+			});
+		</script>
+
+</body>
+</html>

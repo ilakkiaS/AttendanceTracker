@@ -1,0 +1,96 @@
+<html>
+<head>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="css/sideNav.css">
+<link href="css/jquery.filer.css" rel="stylesheet">
+<link href="css/jquery.filer-dragdropbox-theme.css"
+	rel="stylesheet">
+<title>Attendance Tracker ~ Admin Dashboard</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="script/custom.js" type="text/javascript"></script>
+<script src="script/jquery.filer.min.js" type="text/javascript"></script>
+<style>
+body {
+	font-family: 'Roboto Condensed', sans-serif;
+	font-size: 14px;
+	line-height: 1.42857143;
+	color: #47525d;
+	background-color: #fff;
+	margin: 0;
+}
+
+hr {
+	margin-top: 20px;
+	margin-bottom: 20px;
+	border: 0;
+	border-top: 1px solid #eee;
+}
+
+.jFiler {
+	font-family: inherit;
+}
+
+</style>
+</head>
+<body>
+	<div class="nav-side-menu">
+		<div class="brand">
+			<h3>ATTENDANCE TRACKER</h3>
+		</div>
+		<i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse"
+			data-target="#menu-content"></i>
+		<div class="menu-list">
+			<ul id="menu-content" class="menu-content collapse out">
+			<li class="active"><a href="#"><i
+						class="fa fa-upload fa-lg"></i> Upload New Employee Details</a></li>
+			
+				<li><a href="allEmployeeDetails.htm"> <i
+						class="fa fa-users fa-lg"></i> Employee Details
+				</a></li>
+				
+
+				<li data-toggle="collapse" data-target="#service" class="collapsed">
+					<a href="redirect.htm?pageName=statistics"><i class="fa fa-pie-chart fa-lg"></i> Statistics</a>
+				</li>
+
+
+				<li data-toggle="collapse" data-target="#new" class="collapsed">
+					<a href="redirect.htm?pageName=report"><i class="fa fa-file-excel-o fa-lg"></i> Generate
+						Reports</a>
+				</li>
+
+				<li><a href="redirect.htm?pageName=reminder"> <i class="fa fa-envelope-open-o fa-lg"></i>
+						Reminder
+				</a></li>
+
+			</ul>
+		</div>
+	</div>
+	<div class="container" id="main">
+		<div class="row">
+			<div class="col-md-12">
+				<br>
+				<br>
+				<br>
+				<br>
+				<div id="content">
+
+					<input type="file" name="empDetails" id="filer_input2"
+						multiple="multiple">
+
+				</div>
+				<br>
+				<br> <span class="label label-info">Note: Employee
+					Details should be uploaded only in (.xlsx) Format</span>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
