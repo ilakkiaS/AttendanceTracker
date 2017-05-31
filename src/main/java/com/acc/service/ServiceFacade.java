@@ -13,6 +13,6 @@ public interface ServiceFacade {
 	public ArrayList<ResourceMaster> approve(long employeeId);
 	public ArrayList<String> getCalendarData(long employeeId, String month, int year);
 	public ArrayList<ResourceMaster> allEmployeeDetails();
-	public ArrayList<Integer> generateReport(String month, long employeeId);
+	public ArrayList<Integer> generateReport(String month, int year, long employeeId);
 
 }

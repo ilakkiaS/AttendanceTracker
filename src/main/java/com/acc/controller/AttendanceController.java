@@ -67,7 +67,7 @@ public class AttendanceController {
 		ServiceImplementaion service = new ServiceImplementaion();
 		if(flag.equals("login") )
 		{	
-			resource = service.loginEmployee(enterpriseId,password);
+			resource = serv.loginEmployee(enterpriseId,password);
 		
 			if(resource.getEmployeeName() != null)
 			{
@@ -89,7 +89,7 @@ public class AttendanceController {
 		else if(flag.equals("signup"))
 		{
 			int count = 0;
-			count = service.signupEmployee(enterpriseId, password);
+			count = serv.signupEmployee(enterpriseId, password);
 			if(count == 1)
 			{
 				modelandview.addObject("code","success");
@@ -161,8 +161,8 @@ public class AttendanceController {
 		HttpSession session=request.getSession();
 		ResourceMaster resource = (ResourceMaster)session.getAttribute("resource");
 		long employeeId = resource.getEmployeeId();
-		ServiceImplementaion service = new ServiceImplementaion();
-		employeeObjects = service.approve(employeeId);
+	
+		employeeObjects = serv.approve(employeeId);
 		modelandview.addObject("employeeObjects", employeeObjects);
 		modelandview.setViewName("approve");
 		return modelandview;
@@ -204,9 +204,8 @@ public class AttendanceController {
 	public ModelAndView allEmployeeDetails(HttpServletRequest request,HttpServletResponse response)
 	{
 		ModelAndView modelandview = new ModelAndView();
-		ServiceImplementaion service = new ServiceImplementaion();
 		ArrayList<ResourceMaster> allEmployeesData = new ArrayList<ResourceMaster>();
-		allEmployeesData = service.allEmployeeDetails();
+		allEmployeesData = serv.allEmployeeDetails();
 		modelandview.setViewName("employeeDetails");
 		modelandview.addObject("allEmployeesData", allEmployeesData);
 		return modelandview;
@@ -218,15 +217,19 @@ public class AttendanceController {
 		ResourceMaster resource = (ResourceMaster)session.getAttribute("resource");
 		long supervisorId = resource.getEmployeeId();
 		ModelAndView modelandview = new ModelAndView();
-		ServiceImplementaion service = new ServiceImplementaion();
 		String month = request.getParameter("monthName");
 		int position = month.indexOf(',');
-		month = month.substring(0, position) + month.substring(position + 1);
-		ArrayList<ResourceMaster> employeeObjects = service.approve(supervisorId);
+		int	year = Integer.parseInt(month.substring(position + 1));
+		month = month.substring(0, position);
+		System.out.println(month);
+		
+		System.out.println(year);
+		
+		ArrayList<ResourceMaster> employeeObjects = serv.approve(supervisorId);
 		Map<String, ArrayList> empIdAndData = new HashMap();
 		for(ResourceMaster employee : employeeObjects)
 		{
-			ArrayList<Integer> reportData = service.generateReport(month,employee.getEmployeeId());
+			ArrayList<Integer> reportData = serv.generateReport(month,year,employee.getEmployeeId());
 			String employeeId = String.valueOf(employee.getEmployeeId());
 			empIdAndData.put(employeeId, reportData);
 		}

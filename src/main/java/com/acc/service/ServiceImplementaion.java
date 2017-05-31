@@ -34,10 +34,11 @@ public class ServiceImplementaion implements ServiceFacade{
 		}
 		return resource;
 	}
+	@Transactional
 	public ResourceMaster loginEmployee(String enterpriseId, String password) {
 		
 		try{
-			resource = daoImpl.loginEmployee(enterpriseId,password);
+			resource = dao.loginEmployee(enterpriseId,password);
 		}
 		catch(ClassNotFoundException e)
 		{
@@ -49,10 +50,11 @@ public class ServiceImplementaion implements ServiceFacade{
 		}
 		return resource;
 	}
+	@Transactional
 	public int signupEmployee(String enterpriseId, String password) {
 		int count = 0;
 		try{
-			count = daoImpl.signupEmployee(enterpriseId,password);
+			count = dao.signupEmployee(enterpriseId,password);
 		}
 		catch(ClassNotFoundException e)
 		{
@@ -80,10 +82,11 @@ public class ServiceImplementaion implements ServiceFacade{
 		}
 		return count;
 	}
+	@Transactional
 	public ArrayList<ResourceMaster> approve(long employeeId) {
 		ArrayList<ResourceMaster> employeeObjects = new ArrayList<ResourceMaster>();
 		try{
-			employeeObjects = daoImpl.approve(employeeId);
+			employeeObjects = dao.approve(employeeId);
 			
 		}
 		catch(ClassNotFoundException e)
@@ -113,10 +116,11 @@ public class ServiceImplementaion implements ServiceFacade{
 		
 		return calendarData;
 	}
+	@Transactional
 	public ArrayList<ResourceMaster> allEmployeeDetails() {
 		ArrayList<ResourceMaster> allEmployeesData = new ArrayList<ResourceMaster>();
 		try{
-			allEmployeesData = daoImpl.allEmployeeDetails();
+			allEmployeesData = dao.allEmployeeDetails();
 		}
 		catch(ClassNotFoundException e)
 		{
@@ -128,10 +132,11 @@ public class ServiceImplementaion implements ServiceFacade{
 		}
 		return allEmployeesData;
 	}
-	public ArrayList<Integer> generateReport(String month, long employeeId) {
+	@Transactional
+	public ArrayList<Integer> generateReport(String month, int year, long employeeId) {
 		ArrayList<Integer> reportData = new ArrayList<Integer>();
 		try{
-			reportData = daoImpl.generateReport(month, employeeId);
+			reportData = dao.generateReport(month, year, employeeId);
 		}
 		catch(ClassNotFoundException e)
 		{

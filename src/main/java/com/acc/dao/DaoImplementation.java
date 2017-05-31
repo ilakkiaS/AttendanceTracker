@@ -55,8 +55,18 @@ public class DaoImplementation extends AbstractDao implements DaoFacade {
 	}
 	public ResourceMaster loginEmployee(String enterpriseId, String password)
 			throws ClassNotFoundException, SQLException {
+		
+		Session session=getSession();
+		Query query=session.createQuery("select e from  ResourceMaster e where e.enterpriseId=:entId and e.password=:pass");
+		query.setParameter("entId", enterpriseId);
+		query.setParameter("pass",password);
 		ResourceMaster resource = new ResourceMaster();
-		connection = DatabaseConnection.createConnection();
+		List<ResourceMaster> empList=query.list();
+		for(ResourceMaster resources:empList)
+		{
+			resource = resources;
+		}
+		/*connection = DatabaseConnection.createConnection();
 		if(connection != null)
 		{
 			statement = connection.prepareStatement("select * from employee where enterprise_id = ? and password = ?");
@@ -73,12 +83,12 @@ public class DaoImplementation extends AbstractDao implements DaoFacade {
 			}
 			
 		}
-		DatabaseConnection.closeConnection();
+		DatabaseConnection.closeConnection();*/
 		return resource;
 	}
 	public int signupEmployee(String enterpriseId, String password) throws ClassNotFoundException, SQLException {
-		connection = DatabaseConnection.createConnection();
-		int count = 0;
+		/*connection = DatabaseConnection.createConnection();
+		
 		if(connection != null)
 		{
 			statement = connection.prepareStatement("update employee set password = ? where enterprise_id = ?");
@@ -86,7 +96,12 @@ public class DaoImplementation extends AbstractDao implements DaoFacade {
 			statement.setString(2, enterpriseId);
 			count = statement.executeUpdate();
 		}
-		DatabaseConnection.closeConnection();
+		DatabaseConnection.closeConnection();*/
+		int count = 0;
+		Session session=getSession();Query query=session.createQuery("update ResourceMaster r set r.password=:password where r.enterpriseId=:enterpriseid");
+		query.setParameter("enterpriseid", enterpriseId);
+		query.setParameter("password",password);
+		count = query.executeUpdate();
 		return count;
 	}
 	public int calendarDataStore(long employeeId, int year, String month, String[] shiftData)
@@ -127,10 +142,21 @@ public class DaoImplementation extends AbstractDao implements DaoFacade {
 			return 0;
 	}
 	public ArrayList<ResourceMaster> approve(long employeeId) throws ClassNotFoundException, SQLException {
-		connection = DatabaseConnection.createConnection();
+		//connection = DatabaseConnection.createConnection();
 		ArrayList<ResourceMaster> employeeObjects = new ArrayList<ResourceMaster>();
 		
-		if(connection != null)
+		Session session=getSession();
+		Query query=session.createQuery("select e from  ResourceMaster e where e.supervisorId=:supId");
+		query.setParameter("supId", employeeId);
+		
+		
+		List<ResourceMaster> empList=query.list();
+		for(ResourceMaster resource:empList)
+		{
+			employeeObjects.add(resource);
+		}
+		
+		/*if(connection != null)
 		{
 			statement = connection.prepareStatement("select * from employee where supervisor_id = ?");
 			statement.setLong(1, employeeId);
@@ -144,7 +170,7 @@ public class DaoImplementation extends AbstractDao implements DaoFacade {
 				employeeObjects.add(resource);
 			}
 		}
-		DatabaseConnection.closeConnection();
+		DatabaseConnection.closeConnection();*/
 		
 		return employeeObjects;
 	}
@@ -184,10 +210,20 @@ public class DaoImplementation extends AbstractDao implements DaoFacade {
 		return calendarData;
 	}
 	public ArrayList<ResourceMaster> allEmployeeDetails() throws ClassNotFoundException, SQLException {
-		connection = DatabaseConnection.createConnection();
+		//connection = DatabaseConnection.createConnection();
 		ArrayList<ResourceMaster> allEmployeesData = new ArrayList<ResourceMaster>();
+		Session session=getSession();
+		Query query=session.createQuery("select e from  ResourceMaster e ");
+	
 		
-		if(connection != null)
+		
+		List<ResourceMaster> empList=query.list();
+		for(ResourceMaster resource:empList)
+		{
+			allEmployeesData.add(resource);
+		}
+		
+		/*if(connection != null)
 		{
 			statement = connection.prepareStatement("select * from employee");
 			ResultSet resultSet = statement.executeQuery();
@@ -203,15 +239,37 @@ public class DaoImplementation extends AbstractDao implements DaoFacade {
 				allEmployeesData.add(resource);
 			}
 		}
-		DatabaseConnection.closeConnection();
+		DatabaseConnection.closeConnection();*/
 		return allEmployeesData;
 	}
-	public ArrayList<Integer> generateReport(String month, long employeeId) throws ClassNotFoundException, SQLException {
+	public ArrayList<Integer> generateReport(String month, int year, long employeeId) throws ClassNotFoundException, SQLException {
 		ArrayList<Integer> reportData = new ArrayList<Integer>();
-		connection = DatabaseConnection.createConnection();
+		int aCount = 0, bCount = 0, cCount = 0;
+		String shift=null;
+		ArrayList<ResourceMaster> allEmployeesData = new ArrayList<ResourceMaster>();
+		Session session=getSession();
+		Query query=session.createQuery("select e from  Timesheet e where employeeId=:empid and month=:month and year=:year");
+		query.setParameter("empid", employeeId);
+		query.setParameter("month", month);
+		query.setParameter("year", year);
+		List<Timesheet> empList=query.list();
+		for(Timesheet shiftData : empList)
+		{
+			shift = shiftData.getShift();
+			if(shift.equals("a"))
+				aCount++;
+			if(shift.equals("b"))
+				bCount++;
+			if(shift.equals("c"))
+				cCount++;				
+		}
+		reportData.add(aCount);
+		reportData.add(bCount);
+		reportData.add(cCount);
+		/*connection = DatabaseConnection.createConnection();
 		String query = "select * from "+month+" where employee_id="+employeeId;
 		System.out.println(query);
-		int aCount = 0, bCount = 0, cCount = 0;
+		
 		if(connection != null)
 		{
 			statement = connection.prepareStatement(query);
@@ -234,7 +292,7 @@ public class DaoImplementation extends AbstractDao implements DaoFacade {
 			reportData.add(cCount);
 		}
 		
-		DatabaseConnection.closeConnection();
+		DatabaseConnection.closeConnection();*/
 		return reportData;
 	}
 
