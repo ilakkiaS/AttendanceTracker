@@ -17,4 +17,9 @@
     <servlet-name>AttendanceTracker</servlet-name>
     <url-pattern>*.htm</url-pattern>
   </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>AttendanceTracker</servlet-name>
+    <url-pattern>*.ind</url-pattern>
+  </servlet-mapping>
+   
 </web-app>

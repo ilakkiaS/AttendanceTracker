@@ -1,6 +1,7 @@
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+ 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@page import = "com.acc.entity.ResourceMaster"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -9,10 +10,9 @@
 <TITLE>Approve</TITLE>
 <% HttpSession sess=request.getSession();
 ResourceMaster resource = (ResourceMaster)sess.getAttribute("resource");
-ArrayList<String> calendarData=(ArrayList<String>)request.getAttribute("calendarData");
- int i=0;
-//String[] calendarData = (String[])request.getAttribute("calendarData");
+
 %>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 <link rel="stylesheet"
@@ -190,7 +190,6 @@ function populateTable(form) {
 		if (dayCounter <= howMany)
 			{
 			newC.innerHTML = dayCounter 
-			<%System.out.println(calendarData.get(i));%> 
 			dayCounter++
 			}
 		else
@@ -222,17 +221,46 @@ function setCurrMonth(today) {
     document.dateChooser.chooseMonth.selectedIndex = today.getMonth()
 }
 
-function employeeSelect(){	
+/* function employeeSelect(){	
 	var selectEmployee = document.getElementById("selectEmployee");
 	var employeeId = selectEmployee.options[selectEmployee.selectedIndex].value;
-	/* var actionUrl = "getCalendarData.htm?employeeId="+employeeId;
-	alert(actionUrl);
-	document.getElementById("selectEmployeeForm").action = actionUrl; */
+	
 	document.getElementById("employeeId").value = employeeId;
 	document.getElementById("selectEmployeeForm").submit();
 	
-}
+} */
 </SCRIPT>
+
+ <script>
+ 
+	  
+$(document).ready(function() {
+	 $("#selectEmployee").change(function(event){ 
+		var selectEmployee = document.getElementById("selectEmployee");
+		var employeeId = selectEmployee.options[selectEmployee.selectedIndex].value;
+		event.preventDefault();
+		$.ajax({
+			url:"getCalendarData.do",
+			dataType: 'json',
+			data:employeeId,
+			
+				accept: {
+	                  json: 'application/json'
+	            },
+
+			type:"POST",
+			success: function(h) {
+				alert(h.employeeId)
+			}
+		});
+		return false;  
+	});
+	
+	
+	
+});
+
+</script>
 </HEAD>
 
 <BODY onLoad="fillYears(); populateTable(document.dateChooser)">
@@ -249,7 +277,7 @@ function employeeSelect(){
 		</table>
 	
 	</div> --%>
-	<form name = "selectEmployeeForm" id = "selectEmployeeForm" action="getCalendarData.htm">
+<!-- 	<form name = "selectEmployeeForm" id = "selectEmployeeForm" action="getCalendarData.htm"> -->
 	<input type="hidden" name="employeeId" id="employeeId">
 	<div id = "selectEmployeeDiv">
  		<select onchange="employeeSelect()" id = "selectEmployee">
@@ -258,7 +286,7 @@ function employeeSelect(){
 			</c:forEach>
 		</select>
 	</div>
-	</form>
+<!-- 	</form> -->
 <nav class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container-fluid">
 		

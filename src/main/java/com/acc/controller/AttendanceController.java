@@ -7,11 +7,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.acc.entity.CalendarData;
 import com.acc.entity.ResourceMaster;
+import com.acc.service.ServiceFacade;
 import com.acc.service.ServiceImplementaion;
 
 import java.util.Calendar;
@@ -20,7 +26,8 @@ import java.util.Map;
 
 @Controller
 public class AttendanceController {
-
+	@Autowired
+	ServiceFacade serv;
 	@RequestMapping("/idCheck.htm")
 	public ModelAndView idCheck(HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
@@ -28,7 +35,7 @@ public class AttendanceController {
 		ResourceMaster resource = new ResourceMaster();
 		ServiceImplementaion service = new ServiceImplementaion();
 		String enterpriseId = request.getParameter("enterpriseId");
-		resource = service.searchEmployee(enterpriseId);
+		resource = serv.searchEmployee(enterpriseId);
 		String password = resource.getPassword();
 		if(resource.getEmployeeName() != null)
 		{
@@ -130,8 +137,12 @@ public class AttendanceController {
 			shiftData[i] = request.getParameter(shift);
 			
 		}
-		service.calendarDataStore(employeeId, year, month, shiftData);
+		int count = serv.calendarDataStore(employeeId, year, month, shiftData);
 		modelandview.setViewName("timesheet");
+		if(count == 1)
+			modelandview.addObject("code", "success");
+		else
+			modelandview.addObject("code", "failure");
 		return modelandview;
 	}
 	@RequestMapping("/redirect.htm")
@@ -157,10 +168,16 @@ public class AttendanceController {
 		return modelandview;
 
 	}
-	@RequestMapping("/getCalendarData.htm")
-	public ModelAndView getCalendarData(HttpServletRequest request,HttpServletResponse response)
+	@ResponseBody
+	@RequestMapping(value = "getCalendarData.ind", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE )
+	public CalendarData getCalendarData(HttpServletRequest request,HttpServletResponse response)
 	{
-		ArrayList<ResourceMaster> employeeObjects = new ArrayList<ResourceMaster>();
+		CalendarData cale = new CalendarData();
+		cale.setEmployeeId(123456);
+		cale.setMonth("may");
+		cale.setYear(1243);
+		System.out.println("insit");
+		/*ArrayList<ResourceMaster> employeeObjects = new ArrayList<ResourceMaster>();
 		 String[] monthName = { "january", "february", "march", "april", "may", "june", "july",
 			        "august", "september", "october", "november", "december" };
 		 Calendar cal = Calendar.getInstance();
@@ -180,8 +197,8 @@ public class AttendanceController {
 		employeeObjects = service.approve(supervisorId);
 		modelandview.addObject("employeeObjects", employeeObjects);
 		modelandview.setViewName("approve");
-		session.setAttribute("calendarData", calendarData);
-		return modelandview;
+		session.setAttribute("calendarData", calendarData);*/
+		return cale;
 	}
 	@RequestMapping("/allEmployeeDetails.htm")
 	public ModelAndView allEmployeeDetails(HttpServletRequest request,HttpServletResponse response)

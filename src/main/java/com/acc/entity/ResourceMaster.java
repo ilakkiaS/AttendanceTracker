@@ -1,14 +1,31 @@
 package com.acc.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="employee")
 public class ResourceMaster {
+	@Id
+	@Column(name = "employee_id")
+	Long employeeId;
+	@Column(name = "enterprise_id")
 	String enterpriseId;
+	@Column(name = "employee_name")
 	String employeeName;
-	long employeeId;
+	@Column(name = "password")
 	String password;
+	@Column(name = "designation")
 	String designation;
-	int careerLevel;
-	long supervisorId;
+	@Column(name = "career_level")
+	Integer careerLevel;
+	@Column(name = "supervisor_id")
+	Long supervisorId;
+	@Column(name = "technology")
 	String technology;
+	@Column(name = "default_shift")
 	String defaultShift;
 	public String getEnterpriseId() {
 		return enterpriseId;

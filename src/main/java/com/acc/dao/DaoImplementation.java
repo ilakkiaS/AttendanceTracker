@@ -6,16 +6,36 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.acc.entity.ResourceMaster;
+import com.acc.entity.Timesheet;
 import com.acc.helper.DatabaseConnection;
-
-public class DaoImplementation implements DaoFacade {
+@Repository
+public class DaoImplementation extends AbstractDao implements DaoFacade {
+	
 	private static Connection connection = null;
 	PreparedStatement statement = null;
 	public ResourceMaster searchEmployee(String enterpriseId) throws ClassNotFoundException, SQLException {
+		
+		Session session=getSession();
+		Query query=session.createQuery("select e from  ResourceMaster e where e.enterpriseId=:entId");
+		query.setParameter("entId", enterpriseId);
+		List<ResourceMaster> empList=query.list();
 		ResourceMaster resource = new ResourceMaster();
-		connection = DatabaseConnection.createConnection();
+
+		for(ResourceMaster resources:empList)
+		{
+			resource = resources;
+		}
+		System.out.println(resource.getEmployeeId());
+		/*connection = DatabaseConnection.createConnection();
 		if(connection != null)
 		{
 			statement = connection.prepareStatement("select * from employee where enterprise_id = ?");
@@ -30,7 +50,7 @@ public class DaoImplementation implements DaoFacade {
 				resource.setDesignation(rs.getString("designation"));
 			}
 		}
-		DatabaseConnection.closeConnection();
+		DatabaseConnection.closeConnection();*/
 		return resource;
 	}
 	public ResourceMaster loginEmployee(String enterpriseId, String password)
@@ -71,25 +91,40 @@ public class DaoImplementation implements DaoFacade {
 	}
 	public int calendarDataStore(long employeeId, int year, String month, String[] shiftData)
 			throws ClassNotFoundException, SQLException {
-		connection = DatabaseConnection.createConnection();
-		int count = 0;
-		String monthYear = month + year;
+		/*connection = DatabaseConnection.createConnection();*/
+		int count;
+		Session session=getSession();
+	//	session.beginTransaction();
+		for(count = 1 ; count < shiftData.length ; count++){
+			Timesheet timesheet = new Timesheet();
+			timesheet.setEmployeeId(employeeId);
+			timesheet.setMonth(month);
+			timesheet.setYear(year);
+			timesheet.setDate(count);
+			timesheet.setShift(shiftData[count]);
+			session.save(timesheet);
+		}
+		// session.getTransaction().commit();
+		/*String monthYear = month + year;
 		String query = "insert into " + monthYear + " values("+employeeId;
 		int length = shiftData.length - 1;
 		for(int i = 1 ; i <= length ; i++)
 		{
 			query = query +",'"+ shiftData[i]+"'";
 		}
-		query = query + ");";
+		query = query + ");";*/
 		
-		if(connection != null)
+		/*if(connection != null)
 		{
 			statement = connection.prepareStatement(query);
 			count = statement.executeUpdate();
 
 		}
-		DatabaseConnection.closeConnection();
-		return count;
+		DatabaseConnection.closeConnection();*/
+		if(count == shiftData.length)
+			return 1;
+		else
+			return 0;
 	}
 	public ArrayList<ResourceMaster> approve(long employeeId) throws ClassNotFoundException, SQLException {
 		connection = DatabaseConnection.createConnection();

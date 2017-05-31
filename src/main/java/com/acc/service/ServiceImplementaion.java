@@ -4,16 +4,25 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.acc.dao.DaoFacade;
 import com.acc.dao.DaoImplementation;
 import com.acc.entity.ResourceMaster;
-
+@Service
 public class ServiceImplementaion implements ServiceFacade{
+	@Autowired
+	DaoFacade dao;
 	ResourceMaster resource = new ResourceMaster();
 	DaoImplementation daoImpl = new DaoImplementation();
+	@Transactional
 	public ResourceMaster searchEmployee(String enterpriseId) {
 		
 		try{
-			resource = daoImpl.searchEmployee(enterpriseId);
+			resource = dao.searchEmployee(enterpriseId);
 		}
 		catch(ClassNotFoundException e)
 		{
@@ -55,10 +64,11 @@ public class ServiceImplementaion implements ServiceFacade{
 		}
 		return count;
 	}
+	@Transactional
 	public int calendarDataStore(long employeeId, int year, String month, String[] shiftData) {
 		int count = 0;
 		try{
-			 count = daoImpl.calendarDataStore(employeeId, year, month, shiftData);
+			 count = dao.calendarDataStore(employeeId, year, month, shiftData);
 		}
 		catch(ClassNotFoundException e)
 		{

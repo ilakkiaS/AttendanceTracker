@@ -29,6 +29,16 @@ TD, TH {text-align:center}
   background-color: #4ebbdb !important;
 }
 </STYLE>
+<c:if test="${code == 'success'}">
+<script>
+  alert("Timesheet Submitted");
+</script>
+</c:if>
+<c:if test="${code == 'failure'}">
+<script>
+  alert("Error submitting your Timesheet");
+</script>
+</c:if>
 <SCRIPT LANGUAGE="JavaScript">
 /*******************
   UTILITY FUNCTIONS
@@ -158,9 +168,7 @@ function setCurrMonth(today) {
 }
 </SCRIPT>
 </HEAD>
-<% HttpSession sess=request.getSession();
-ResourceMaster resource = (ResourceMaster)sess.getAttribute("resource");
-%>
+
 <BODY onLoad="fillYears(); populateTable(document.dateChooser)">
 <nav class="navbar navbar-inverse navbar-fixed-top">
   <div class="container-fluid">
