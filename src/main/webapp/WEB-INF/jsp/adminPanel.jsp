@@ -1,3 +1,4 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
 <link rel="stylesheet"
@@ -40,6 +41,16 @@ hr {
 </style>
 </head>
 <body>
+<c:if test="${code == 'success'}">
+<script>
+  alert("Employee details added successfully!!");
+</script>
+</c:if>
+<c:if test="${code == 'failure'}">
+<script>
+  alert("Error..... Please Try again !!!");
+</script>
+</c:if>
 	<div class="nav-side-menu">
 		<div class="brand">
 			<h3>ATTENDANCE TRACKER</h3>
@@ -81,14 +92,23 @@ hr {
 				<br>
 				<br>
 				<div id="content">
-
-					<input type="file" name="empDetails" id="filer_input2"
-						multiple="multiple">
+					<form action="addEmployee.htm">
+						<table>
+							<tr><td>Employee Name:</td><td><input type="text" name="employeeName"></td></tr>
+							<tr><td>Employee ID:</td><td><input type="text" name="employeeId"></td></tr>
+							<tr><td>Enterprise Id:</td><td><input type="text" name="enterpriseId"></td></tr>
+							<tr><td>Career Level</td><td><input type="text" name="careerLevel"></td></tr>							
+							<tr><td>Supervisor Id:</td><td><input type="text" name="supervisorId"></td></tr>
+							<tr><td>Designation:</td><td><input type="text" name="designation"></td></tr>
+							<tr><td>Technology:</td><td><input type="text" name="technology"></td></tr>
+							<tr><td colspan="2"><input type="submit" value="Add Details"></td></tr>			
+						</table>					
+					</form>
+					
 
 				</div>
 				<br>
-				<br> <span class="label label-info">Note: Employee
-					Details should be uploaded only in (.xlsx) Format</span>
+				<br> 
 			</div>
 		</div>
 	</div>

@@ -7,9 +7,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -33,19 +35,18 @@ public class AttendanceController {
 	{
 		ModelAndView modelandview = new ModelAndView();
 		ResourceMaster resource = new ResourceMaster();
-		ServiceImplementaion service = new ServiceImplementaion();
 		String enterpriseId = request.getParameter("enterpriseId");
 		resource = serv.searchEmployee(enterpriseId);
 		String password = resource.getPassword();
 		if(resource.getEmployeeName() != null)
 		{
-			if(!password.isEmpty())
+			if(StringUtils.isEmpty(password))
 			{
-				modelandview.setViewName("Login");
+				modelandview.setViewName("Signup");
 			}
 			else
 			{
-				modelandview.setViewName("Signup");
+				modelandview.setViewName("Login");
 			}
 			modelandview.addObject("resource", resource);
 		}
@@ -64,7 +65,6 @@ public class AttendanceController {
 		String enterpriseId = request.getParameter("enterpriseId");
 		String password = request.getParameter("password");
 		String flag = request.getParameter("flag");
-		ServiceImplementaion service = new ServiceImplementaion();
 		if(flag.equals("login") )
 		{	
 			resource = serv.loginEmployee(enterpriseId,password);
@@ -106,13 +106,14 @@ public class AttendanceController {
 	@RequestMapping("/calendarstore.htm")
 	public ModelAndView calendarDataStore(HttpServletRequest request,HttpServletResponse response)
 	{
-		ServiceImplementaion service = new ServiceImplementaion();
 		HttpSession session=request.getSession();
 		ResourceMaster resource = (ResourceMaster)session.getAttribute("resource");
 		long employeeId = resource.getEmployeeId();
 		int length = 0;
 		ModelAndView modelandview = new ModelAndView();
+		String flag = request.getParameter("submit");
 		String month = request.getParameter("chooseMonth");
+		System.out.println(month);
 		int year =  Integer.parseInt(request.getParameter("chooseYear"));
 		if(month.equalsIgnoreCase("january") || month.equalsIgnoreCase("march") || month.equalsIgnoreCase("may") || month.equalsIgnoreCase("july") || month.equalsIgnoreCase("august") || month.equalsIgnoreCase("october") || month.equalsIgnoreCase("december"))
 			length = 31;
@@ -137,7 +138,7 @@ public class AttendanceController {
 			shiftData[i] = request.getParameter(shift);
 			
 		}
-		int count = serv.calendarDataStore(employeeId, year, month, shiftData);
+		int count = serv.calendarDataStore(employeeId, year, month, shiftData,flag);
 		modelandview.setViewName("timesheet");
 		if(count == 1)
 			modelandview.addObject("code", "success");
@@ -239,6 +240,25 @@ public class AttendanceController {
 		modelandview.setViewName("pdfView");
 		return modelandview;
 		
+	}
+	@RequestMapping("/addEmployee.htm")
+	public ModelAndView addNewEmployee(@ModelAttribute ResourceMaster resourceMaster,HttpServletRequest request,HttpServletResponse response )
+	{
+		ModelAndView modelandview = new ModelAndView();
+		HttpSession session = request.getSession();
+		ResourceMaster resource = (ResourceMaster)session.getAttribute("resource");
+		String creatorName = resource.getEmployeeName();
+		int count = serv.addNewEmployee(resourceMaster,creatorName);
+		if(count == 1)
+		{
+			modelandview.setViewName("adminPanel");
+			modelandview.addObject("code","success");
+		}
+		else
+		{
+			modelandview.addObject("code","failure");
+		}
+		return modelandview;
 	}
 	
 	

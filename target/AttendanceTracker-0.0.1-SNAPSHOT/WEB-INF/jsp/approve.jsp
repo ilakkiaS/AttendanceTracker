@@ -240,20 +240,24 @@ $(document).ready(function() {
 		var employeeId = selectEmployee.options[selectEmployee.selectedIndex].value;
 		event.preventDefault();
 		$.ajax({
-			url:"getCalendarData.do",
+			url:"getCalendarData.ind",
 			dataType: 'json',
 			data:employeeId,
-			
-				accept: {
+				/* accept: {
 	                  json: 'application/json'
-	            },
+	            }, */
 
 			type:"POST",
 			success: function(h) {
-				alert(h.employeeId)
-			}
+				alert("sdf")
+			},
+	            error: function (jqXHR, textStatus, errorThrown) {
+	            	alert(textStatus)
+	             alert(jqXHR.status)  
+	             alert(errorThrown)
+	            }
 		});
-		return false;  
+		//return false;  
 	});
 	
 	

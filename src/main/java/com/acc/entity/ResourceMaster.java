@@ -27,6 +27,14 @@ public class ResourceMaster {
 	String technology;
 	@Column(name = "default_shift")
 	String defaultShift;
+	@Column(name = "created_by")
+	String createdBy;
+	public String getCreatedBy() {
+		return createdBy;
+	}
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
 	public String getEnterpriseId() {
 		return enterpriseId;
 	}
@@ -39,10 +47,10 @@ public class ResourceMaster {
 	public void setEmployeeName(String employeeName) {
 		this.employeeName = employeeName;
 	}
-	public long getEmployeeId() {
+	public Long getEmployeeId() {
 		return employeeId;
 	}
-	public void setEmployeeId(long employeeId) {
+	public void setEmployeeId(Long employeeId) {
 		this.employeeId = employeeId;
 	}
 	public String getPassword() {
@@ -57,16 +65,16 @@ public class ResourceMaster {
 	public void setDesignation(String designation) {
 		this.designation = designation;
 	}
-	public int getCareerLevel() {
+	public Integer getCareerLevel() {
 		return careerLevel;
 	}
-	public void setCareerLevel(int careerLevel) {
+	public void setCareerLevel(Integer careerLevel) {
 		this.careerLevel = careerLevel;
 	}
-	public long getSupervisorId() {
+	public Long getSupervisorId() {
 		return supervisorId;
 	}
-	public void setSupervisorId(long supervisorId) {
+	public void setSupervisorId(Long supervisorId) {
 		this.supervisorId = supervisorId;
 	}
 	public String getTechnology() {

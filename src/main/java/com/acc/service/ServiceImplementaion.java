@@ -67,10 +67,10 @@ public class ServiceImplementaion implements ServiceFacade{
 		return count;
 	}
 	@Transactional
-	public int calendarDataStore(long employeeId, int year, String month, String[] shiftData) {
+	public int calendarDataStore(long employeeId, int year, String month, String[] shiftData, String flag) {
 		int count = 0;
 		try{
-			 count = dao.calendarDataStore(employeeId, year, month, shiftData);
+			 count = dao.calendarDataStore(employeeId, year, month, shiftData, flag);
 		}
 		catch(ClassNotFoundException e)
 		{
@@ -147,6 +147,22 @@ public class ServiceImplementaion implements ServiceFacade{
 			e.printStackTrace();
 		}
 		return reportData;
+	}
+	@Transactional
+	public int addNewEmployee(ResourceMaster resource, String creatorName) {
+		int count = 0;
+		try{
+			count = dao.addNewEmployee(resource,creatorName);
+		}
+		catch(ClassNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		return count;
 	}
 
 }
