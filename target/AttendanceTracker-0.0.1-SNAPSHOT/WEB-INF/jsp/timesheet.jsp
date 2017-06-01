@@ -15,8 +15,8 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script 
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script
@@ -166,6 +166,7 @@ function fillYears() {
 function setCurrMonth(today) {
     document.dateChooser.chooseMonth.selectedIndex = today.getMonth()
 }
+
 </SCRIPT>
 </HEAD>
 
@@ -196,35 +197,44 @@ function setCurrMonth(today) {
 <H1></H1>
 <HR>
 <FORM id = "dateChooser" NAME="dateChooser" action="calendarstore.htm" >
-<br><br><br><br><br><br><br>
-<TABLE ID="calendarTable" BORDER=1 ALIGN="center">
-<TR>
-    <TH ID="tableHeader" COLSPAN=7></TH>
-</TR>
-
-
-<TR>
-    <TD COLSPAN=7>
+	<br><br><br><br><br><br><br>
+	<input type = "hidden" id = "flag" name = "flag" value = "submit"/>
+	<TABLE ID="calendarTable" BORDER=1 ALIGN="center">
+	
+	<TR>
+    	<TH ID="tableHeader" COLSPAN=7></TH>
+	</TR>
+	<TR>
+    	<TD COLSPAN=7>
     <P>
-    
-        <SELECT NAME="chooseMonth" 
-        onChange="populateTable(this.form)">
-            <OPTION SELECTED>January<OPTION>February
-            <OPTION>March<OPTION>April<OPTION>May
-            <OPTION>June<OPTION>July<OPTION>August
-            <OPTION>September<OPTION>October
-            <OPTION>November<OPTION>December
-    </SELECT>
-    <SELECT NAME="chooseYear" onChange="populateTable(this.form)">
-    </SELECT>
+    	<SELECT NAME="chooseMonth" 
+        	onChange="populateTable(this.form)">
+            	<OPTION SELECTED>January<OPTION>February
+            	<OPTION>March<OPTION>April<OPTION>May
+            	<OPTION>June<OPTION>July<OPTION>August
+            	<OPTION>September<OPTION>October
+            	<OPTION>November<OPTION>December
+    	</SELECT>
+    	<SELECT NAME="chooseYear" onChange="populateTable(this.form)">
+    	</SELECT>
     
     </P></TD>
-</TR>
-<TR><TH>Sun</TH><TH>Mon</TH><TH>Tue</TH><TH>Wed</TH>
-<TH>Thu</TH><TH>Fri</TH><TH>Sat</TH></TR>
-<TBODY ID="tableBody"></TBODY>
-<tr><td colspan=7><input type="submit" value="submit"/></td></tr>
-</TABLE>
+	</TR>
+	<TR><TH>Sun</TH><TH>Mon</TH><TH>Tue</TH><TH>Wed</TH>
+	<TH>Thu</TH><TH>Fri</TH><TH>Sat</TH></TR>
+	<TBODY ID="tableBody"></TBODY>
+	</TABLE>
+	<br/><br/>
+		<center><input class="btn icon-btn btn-success" type="submit" name = "submit" value="submit"/>&nbsp&nbsp&nbsp&nbsp
+		<input class="btn icon-btn btn-warning" type="submit" name = "submit" value="update"/></center>
  </FORM>
+<script>
+	function submit(){
+		var x = document.getElementById("flag1").value;
+		alert(x);
+		document.getElementById("dateChooser").submit();
+		
+	}
+</script>
 </BODY>
 </HTML>

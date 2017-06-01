@@ -7,13 +7,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
-import org.apache.catalina.connector.Request;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
+import com.acc.entity.Project;
+//import com.acc.entity.Project;
 import com.acc.entity.ResourceMaster;
 import com.acc.entity.Timesheet;
 import com.acc.helper.DatabaseConnection;
@@ -187,6 +186,17 @@ public class DaoImplementation extends AbstractDao implements DaoFacade {
 		resourceMaster.setCreatedBy(creatorName);
 		session.save(resourceMaster);
 		return 1;
+	}
+	
+	public int addNewProject(String projectName, String projectDescription, String creatorName)throws ClassNotFoundException, SQLException {
+		Session session=getSession();
+		Project project = new Project();
+		project.setProjectName(projectName);
+		project.setProjectDescription(projectDescription);
+		project.setCreatedBy(creatorName);
+		session.save(project);		
+		return 1;
+		
 	}
 
 }

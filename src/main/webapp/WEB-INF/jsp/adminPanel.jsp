@@ -66,7 +66,9 @@ hr {
 						class="fa fa-users fa-lg"></i> Employee Details
 				</a></li>
 				
-
+				 <li><a href="redirect.htm?pageName=projectDetails"><i
+						class="fa fa-upload fa-lg"></i> Upload New Project Details
+				</a></li>
 				<li data-toggle="collapse" data-target="#service" class="collapsed">
 					<a href="redirect.htm?pageName=statistics"><i class="fa fa-pie-chart fa-lg"></i> Statistics</a>
 				</li>

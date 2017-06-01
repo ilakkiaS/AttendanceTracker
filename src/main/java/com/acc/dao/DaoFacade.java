@@ -16,4 +16,5 @@ public interface DaoFacade {
 	public ArrayList<ResourceMaster> allEmployeeDetails()throws ClassNotFoundException,SQLException;
 	public ArrayList<Integer> generateReport(String month, int year, long employeeId)throws ClassNotFoundException,SQLException;
 	public int addNewEmployee(ResourceMaster resource,String creatorName)throws ClassNotFoundException,SQLException;
+	public int addNewProject(String projectName,String projectDescription,String creatorName)throws ClassNotFoundException,SQLException;
 }

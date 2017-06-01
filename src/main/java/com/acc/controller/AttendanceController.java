@@ -20,7 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.acc.entity.CalendarData;
 import com.acc.entity.ResourceMaster;
 import com.acc.service.ServiceFacade;
-import com.acc.service.ServiceImplementaion;
+//import com.acc.service.ServiceImplementaion;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -258,6 +258,23 @@ public class AttendanceController {
 		{
 			modelandview.addObject("code","failure");
 		}
+		return modelandview;
+	}
+	@RequestMapping("/addNewProject.htm")
+	public ModelAndView addNewProject(HttpServletRequest request,HttpServletResponse response)
+	{
+		ModelAndView modelandview = new ModelAndView();
+		HttpSession session = request.getSession();
+		ResourceMaster resource = (ResourceMaster)session.getAttribute("resource");
+		String creatorName = resource.getEmployeeName();
+		String projectName = request.getParameter("projectName");
+		String projectDescription = request.getParameter("projectDescription");
+		int count = serv.addNewProject(projectName, projectDescription,creatorName);
+		modelandview.setViewName("projectDetails");
+		if(count == 1)
+		  modelandview.addObject("code", "success");
+		else
+			modelandview.addObject("code", "failure");
 		return modelandview;
 	}
 	

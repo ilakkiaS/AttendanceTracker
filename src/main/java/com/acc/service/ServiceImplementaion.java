@@ -164,5 +164,22 @@ public class ServiceImplementaion implements ServiceFacade{
 		}
 		return count;
 	}
+	@Transactional
+	public int addNewProject(String projectName,String projectDescription,String creatorName) {
+		int count = 0;
+		try
+		{
+		 count = dao.addNewProject(projectName, projectDescription, creatorName);
+		}
+		catch(ClassNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		return count;
+	}
 
 }

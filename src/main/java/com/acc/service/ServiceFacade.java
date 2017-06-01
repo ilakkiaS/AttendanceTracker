@@ -15,4 +15,5 @@ public interface ServiceFacade {
 	public ArrayList<ResourceMaster> allEmployeeDetails();
 	public ArrayList<Integer> generateReport(String month, int year, long employeeId);
 	public int addNewEmployee(ResourceMaster resource, String creatorName);
+	public int addNewProject(String projectName,String projectDescription,String creatorName);
 }

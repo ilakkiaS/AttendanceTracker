@@ -1,14 +1,29 @@
 package com.acc.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "projects")
 public class Project {
-	Integer projectId;
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	Integer id;
+	@Column(name = "project_name")
 	String projectName;
-	Integer parentProjectId;
-	public Integer getProjectId() {
-		return projectId;
+	@Column(name = "description")
+	String projectDescription;
+	@Column(name = "created_by")
+	String createdBy;
+	public String getCreatedBy() {
+		return createdBy;
 	}
-	public void setProjectId(Integer projectId) {
-		this.projectId = projectId;
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
 	}
 	public String getProjectName() {
 		return projectName;
@@ -16,11 +31,12 @@ public class Project {
 	public void setProjectName(String projectName) {
 		this.projectName = projectName;
 	}
-	public Integer getParentProjectId() {
-		return parentProjectId;
+	public String getProjectDescription() {
+		return projectDescription;
 	}
-	public void setParentProjectId(Integer parentProjectId) {
-		this.parentProjectId = parentProjectId;
+	public void setProjectDescription(String projectDescription) {
+		this.projectDescription = projectDescription;
 	}
+	
 	
 }
