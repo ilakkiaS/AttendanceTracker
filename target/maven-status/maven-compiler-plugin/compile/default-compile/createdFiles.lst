@@ -10,3 +10,4 @@ com\acc\controller\AttendanceController.class
 com\acc\pdfcreator\AbstractITextPdfView.class
 com\acc\service\ServiceFacade.class
 com\acc\dao\DaoImplementation.class
+com\acc\entity\Project.class

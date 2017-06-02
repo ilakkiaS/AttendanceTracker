@@ -2,6 +2,9 @@ package com.acc.controller;
 
 //import java.security.Provider.Service;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -9,22 +12,20 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.acc.entity.CalendarData;
 import com.acc.entity.ResourceMaster;
 import com.acc.service.ServiceFacade;
 //import com.acc.service.ServiceImplementaion;
-
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
 
 @Controller
 public class AttendanceController {
@@ -169,9 +170,9 @@ public class AttendanceController {
 		return modelandview;
 
 	}
-	@ResponseBody
-	@RequestMapping(value = "getCalendarData.ind", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE )
-	public CalendarData getCalendarData(HttpServletRequest request,HttpServletResponse response)
+	
+	@RequestMapping(value = "getCalendarData.do", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<CalendarData> getCalendarData(HttpServletRequest request,HttpServletResponse response)
 	{
 		CalendarData cale = new CalendarData();
 		cale.setEmployeeId(123456);
@@ -199,7 +200,10 @@ public class AttendanceController {
 		modelandview.addObject("employeeObjects", employeeObjects);
 		modelandview.setViewName("approve");
 		session.setAttribute("calendarData", calendarData);*/
-		return cale;
+		final HttpHeaders httpHeaders= new HttpHeaders();
+	    httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+		ResponseEntity<CalendarData> responseEntity = new ResponseEntity<CalendarData>(cale,httpHeaders,HttpStatus.OK);
+		return responseEntity;
 	}
 	@RequestMapping("/allEmployeeDetails.htm")
 	public ModelAndView allEmployeeDetails(HttpServletRequest request,HttpServletResponse response)
@@ -275,6 +279,15 @@ public class AttendanceController {
 		  modelandview.addObject("code", "success");
 		else
 			modelandview.addObject("code", "failure");
+		return modelandview;
+	}
+	@RequestMapping("/statistics.htm")
+	public ModelAndView statistics(HttpServletRequest request,HttpServletResponse response)
+	{
+		ModelAndView modelandview = new ModelAndView();
+		Map<String, Integer> shiftCount = serv.statistics();
+		modelandview.setViewName("statistics");
+		modelandview.addObject("shiftCount", shiftCount);
 		return modelandview;
 	}
 	

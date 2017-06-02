@@ -3,6 +3,8 @@ package com.acc.service;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 
@@ -180,6 +182,23 @@ public class ServiceImplementaion implements ServiceFacade{
 			e.printStackTrace();
 		}
 		return count;
+	}
+	@Transactional
+	public   Map<String,Integer> statistics() {
+		 Map<String,Integer> shiftCount = new HashMap<String, Integer>();
+		try
+		{
+			shiftCount = dao.statistics();
+		}
+		catch(ClassNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		return shiftCount;
 	}
 
 }

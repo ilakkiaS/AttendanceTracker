@@ -1,8 +1,9 @@
 package com.acc.dao;
 
-import java.sql.ResultSet;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Map;
 
 import com.acc.entity.ResourceMaster;
 
@@ -17,4 +18,5 @@ public interface DaoFacade {
 	public ArrayList<Integer> generateReport(String month, int year, long employeeId)throws ClassNotFoundException,SQLException;
 	public int addNewEmployee(ResourceMaster resource,String creatorName)throws ClassNotFoundException,SQLException;
 	public int addNewProject(String projectName,String projectDescription,String creatorName)throws ClassNotFoundException,SQLException;
+	public  Map<String,Integer> statistics()throws ClassNotFoundException,SQLException;
 }

@@ -1,7 +1,8 @@
 package com.acc.service;
 
-import java.sql.ResultSet;
+
 import java.util.ArrayList;
+import java.util.Map;
 
 import com.acc.entity.ResourceMaster;
 
@@ -16,4 +17,6 @@ public interface ServiceFacade {
 	public ArrayList<Integer> generateReport(String month, int year, long employeeId);
 	public int addNewEmployee(ResourceMaster resource, String creatorName);
 	public int addNewProject(String projectName,String projectDescription,String creatorName);
+	public   Map<String,Integer> statistics();
+
 }

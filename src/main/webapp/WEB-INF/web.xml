@@ -19,7 +19,7 @@
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>AttendanceTracker</servlet-name>
-    <url-pattern>*.ind</url-pattern>
+    <url-pattern>*.do</url-pattern>
   </servlet-mapping>
    
 </web-app>

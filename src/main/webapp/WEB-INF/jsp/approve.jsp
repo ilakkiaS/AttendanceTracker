@@ -239,14 +239,14 @@ $(document).ready(function() {
 		var employeeId = selectEmployee.options[selectEmployee.selectedIndex].value;
 		event.preventDefault();
 		$.ajax({
-			url:"getCalendarData.ind",
+			url:"getCalendarData.do",
 			dataType: 'json',
 			data:employeeId,
 				/* accept: {
 	                  json: 'application/json'
 	            }, */
 
-			type:"POST",
+			type:"GET",
 			success: function(h) {
 				alert("sdf")
 			},

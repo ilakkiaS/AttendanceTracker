@@ -70,7 +70,7 @@ hr {
 						class="fa fa-upload fa-lg"></i> Upload New Project Details
 				</a></li>
 				<li data-toggle="collapse" data-target="#service" class="collapsed">
-					<a href="redirect.htm?pageName=statistics"><i class="fa fa-pie-chart fa-lg"></i> Statistics</a>
+					<a href="statistics.htm"><i class="fa fa-pie-chart fa-lg"></i> Statistics</a>
 				</li>
 
 

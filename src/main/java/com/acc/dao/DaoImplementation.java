@@ -5,7 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -197,6 +200,39 @@ public class DaoImplementation extends AbstractDao implements DaoFacade {
 		session.save(project);		
 		return 1;
 		
+	}
+	public Map<String, Integer> statistics() throws ClassNotFoundException, SQLException {
+		// TODO Auto-generated method stub
+		  Date date = new Date();
+		  String[] monthName = { "january", "february", "march", "april", "may", "june", "july",
+			        "august", "september", "october", "november", "december" };
+		  int aCount = 0, bCount = 0, cCount = 0;
+		 // ArrayList<Integer> shiftCount = new ArrayList<Integer>();
+		  String shift=null;
+		  String month = monthName[date.getMonth()];
+		  int year = date.getYear();
+		  Session session=getSession();
+		  Query query=session.createQuery("select e from  Timesheet e where month=:month");
+		  query.setParameter("month", month);
+		  List<Timesheet> empList=query.list();
+		  for(Timesheet shiftData : empList)
+		  {
+				shift = shiftData.getShift();
+				if(shift.equals("a"))
+					aCount++;
+				if(shift.equals("b"))
+					bCount++;
+				if(shift.equals("c"))
+					cCount++;				
+		  }
+		/*  shiftCount.add(aCount);
+		  shiftCount.add(bCount);
+		  shiftCount.add(cCount);*/
+		  Map<String,Integer> shiftCount = new HashMap<String, Integer>();
+		  shiftCount.put("shiftA", aCount);
+		  shiftCount.put("shiftB", bCount);
+		  shiftCount.put("shiftC", cCount);
+		return shiftCount;
 	}
 
 }
