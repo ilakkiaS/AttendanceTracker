@@ -12,7 +12,14 @@ import javax.persistence.Table;
 public class Project {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name = "project_id")
 	Integer id;
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	@Column(name = "project_name")
 	String projectName;
 	@Column(name = "description")

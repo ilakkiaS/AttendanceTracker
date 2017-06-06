@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.transaction.Transactional;
@@ -13,13 +14,14 @@ import org.springframework.stereotype.Service;
 
 import com.acc.dao.DaoFacade;
 import com.acc.dao.DaoImplementation;
+import com.acc.entity.CalendarData;
+import com.acc.entity.Project;
 import com.acc.entity.ResourceMaster;
 @Service
 public class ServiceImplementaion implements ServiceFacade{
 	@Autowired
 	DaoFacade dao;
 	ResourceMaster resource = new ResourceMaster();
-	DaoImplementation daoImpl = new DaoImplementation();
 	@Transactional
 	public ResourceMaster searchEmployee(String enterpriseId) {
 		
@@ -101,10 +103,11 @@ public class ServiceImplementaion implements ServiceFacade{
 		}
 		return employeeObjects;
 	}
-	public ArrayList<String> getCalendarData(long employeeId, String month, int year) {
-		ArrayList<String> calendarData = new ArrayList<String>();
+	@Transactional
+	public CalendarData getCalendarData(long employeeId, String month, int year) {
+		CalendarData calendarData = new CalendarData();
 		try{
-			calendarData = daoImpl.getCalendarData(employeeId, month, year);
+			calendarData = dao.getCalendarData(employeeId, month, year);
 			
 		}
 		catch(ClassNotFoundException e)
@@ -199,6 +202,38 @@ public class ServiceImplementaion implements ServiceFacade{
 			e.printStackTrace();
 		}
 		return shiftCount;
+	}
+	@Transactional
+	public List<Project> getAllProjects() {
+		List<Project> allProjectsData = new ArrayList<Project>();
+		try{
+			allProjectsData = dao.getAllProjects();
+		}
+		catch(ClassNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		return allProjectsData;
+	}
+	@Transactional
+	public List<ResourceMaster> getEmployeeDetailsByProject(Integer projectId) {
+		List<ResourceMaster> employeeObjects = new ArrayList<ResourceMaster>();
+		try{
+			employeeObjects = dao.getEmployeeDetailsByProject(projectId);
+		}
+		catch(ClassNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		return employeeObjects;
 	}
 
 }

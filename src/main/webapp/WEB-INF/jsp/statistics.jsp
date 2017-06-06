@@ -26,26 +26,36 @@ html, body {
     <script type="text/javascript">
       google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawChart);
+		
 
       function drawChart() {
-		var x = document.getElementById("shiftA").value;
-		var y = document.getElementById("shiftB").value;
-		var z = document.getElementById("shiftC").value;
-	/* 	alert(shiftA);
-		alert(shiftB);
-		alert(shiftC); */
-        var data = google.visualization.arrayToDataTable([
+    	var x = document.getElementById("shiftA").value;
+    	alert(x);
+    	var y = document.getElementById("shiftB").value;
+    	alert(y);
+    	var z = document.getElementById("shiftC").value;
+    	alert(z);
+        var data = new google.visualization.arrayToDataTable([
         	['Shift Name', 'value'],
-          ['Shift A',   x],
-          ['Shift B',   y],
-          ['Shift C',  z],
+          ['Shift A',   10],
+          ['Shift B',   20],
+          ['Shift C', 30],
        
         ]);
+        /*var data = google.visualization.arrayToDataTable([
+        	['Shift Name', 'value'],
+          ['Shift A',   document.getElementById("shiftA").value],
+          ['Shift B',   document.getElementById("shiftB").value],
+          ['Shift C',  document.getElementById("shiftC").value],
+       
+        ]);*/
+        
+       
 
-        var options = {
+       var options = {
           title: 'HCSC Shift Details for the Month of March',
          /*  is3D:true, */
-        };
+       };
 
         var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
 
@@ -123,8 +133,8 @@ html, body {
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 	<script
 		src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>
-		<c:forEach items="${shiftCount}" var="shift">
-			<input type = "hidden" name = ${shift.key} id = ${shift.key} value = ${shift.value}>
+		<c:forEach items="${shiftCount}" var="shift" varStatus="status">
+			<input type = "text" name = "${shift.key}" id = "${shift.key}" value = "${shift.value}">
 		</c:forEach>
   </body>
 </html>

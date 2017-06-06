@@ -3,14 +3,14 @@ package com.acc.entity;
 import java.util.List;
 
 public class CalendarData {
-	private int employeeId;
+	private Long employeeId;
 	private String month;
 	private int year;
-	//private List<DayData> dayData;
-	public int getEmployeeId() {
+	private List<DayData> dayData;
+	public Long getEmployeeId() {
 		return employeeId;
 	}
-	public void setEmployeeId(int employeeId) {
+	public void setEmployeeId(Long employeeId) {
 		this.employeeId = employeeId;
 	}
 	public String getMonth() {
@@ -25,11 +25,11 @@ public class CalendarData {
 	public void setYear(int year) {
 		this.year = year;
 	}
-/*	public List<DayData> getDayData() {
+	public List<DayData> getDayData() {
 		return dayData;
 	}
 	public void setDayData(List<DayData> dayData) {
 		this.dayData = dayData;
-	}*/
+	}
 
 }

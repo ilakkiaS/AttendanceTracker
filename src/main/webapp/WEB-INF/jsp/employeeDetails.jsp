@@ -14,6 +14,7 @@
 <link rel="stylesheet" href="css/sideNav.css">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <style>
 .fa-pencil
 {
@@ -24,7 +25,36 @@ color:#F8C471;
 color:#FF0000;
 }
 </style>
-
+<script>
+$(document).ready(function() {
+	 $("#projectName").change(function(event){
+		var selectProject = document.getElementById("projectName");
+		var projectId = selectProject.options[selectProject.selectedIndex].value;
+		event.preventDefault();
+		$.ajax({
+			url:"getEmployeeDetailsByProject.do",
+			dataType: 'html',
+			data:{projectId:projectId},
+			type:"GET",
+			success: function(data) {
+				debugger;
+				var result = $('<div />').append(data).find('#empData').html();
+	            $('#empData').html(result);
+	            
+				},
+	            error: function (jqXHR, textStatus, errorThrown) {
+	            	alert(textStatus)
+	             alert(jqXHR.status)  
+	             alert(errorThrown)
+	            }
+		});
+		 
+	});
+	
+	
+	
+});
+</script>
 </head>
 <body>
 	<div class="nav-side-menu">
@@ -65,16 +95,12 @@ color:#FF0000;
 					<h4>Employee Details by Project
 						&emsp;&emsp;&emsp;&emsp;&emsp;Employee Details by Enterprise ID</h4>
 
-					<select class="selectpicker" data-live-search="true"
+					<select class="selectpicker" data-live-search="true" id = "projectName"
 						name="projectName" data-style="btn-warning">
-						<option data-tokens="ITS">ITS</option>
-						<option data-divider="true"></option>
-						<option data-tokens="PPW">PPW</option>
-						<option data-divider="true"></option>
-						<option data-tokens="CCSP">CCSP</option>
-						<option data-divider="true"></option>
-						<option data-tokens="SHARED ACCUMS">SHARED ACCUMS</option>
-						<option data-divider="true"></option>
+						<c:forEach items="${allProjectsData}" var="allProjectsData">
+							<option value = "${allProjectsData.id}">${allProjectsData.projectName}</option>
+							<option data-divider="true"></option>
+						</c:forEach>
 					</select> &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; <select
 						class="selectpicker" data-live-search="true" name="projectName"
 						data-style="btn-warning">
@@ -94,8 +120,8 @@ color:#FF0000;
 
 					<hr>
 				</div>
-
-				<table class="table table-inverse">
+				<div id="empData">
+					<table class="table table-inverse">
 					<thead>
 						<tr>
 							<th>#</th>
@@ -109,13 +135,13 @@ color:#FF0000;
 					</thead>
 					<tbody>
 						
-						<c:forEach items="${allEmployeesData}" var = "allEmployeesData" varStatus = "loop">
+						<c:forEach items="${employeesData}" var = "employeeData" varStatus = "loop">
 					<tr>
 						<th scope="row"><c:out value = "${loop.count }"></c:out></th>
-						<td><c:out value = "${allEmployeesData.enterpriseId}"/></td>
-						<td><c:out value = "${allEmployeesData.employeeName}"/></td>
-						<td><c:out value = "${allEmployeesData.designation}"/></td>
-						<td><c:out value = "${allEmployeesData.supervisorId}"/></td>
+						<td><c:out value = "${employeeData.enterpriseId}"/></td>
+						<td><c:out value = "${employeeData.employeeName}"/></td>
+						<td><c:out value = "${employeeData.designation}"/></td>
+						<td><c:out value = "${employeeData.supervisorId}"/></td>
 						<td><i class="fa fa-pencil fa-2x" aria-hidden="true"></i></td>
 						<td><i class="fa fa-trash-o fa-2x" aria-hidden="true"></i></td>
 					</tr>
@@ -123,8 +149,7 @@ color:#FF0000;
 												
 					</tbody>
 				</table>
-				
-
+				</div>
 
 			</div>
 		</div>

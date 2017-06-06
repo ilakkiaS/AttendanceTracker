@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +15,8 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
+import com.acc.entity.CalendarData;
+import com.acc.entity.DayData;
 import com.acc.entity.Project;
 //import com.acc.entity.Project;
 import com.acc.entity.ResourceMaster;
@@ -22,7 +25,6 @@ import com.acc.helper.DatabaseConnection;
 @Repository
 public class DaoImplementation extends AbstractDao implements DaoFacade {
 	
-	private static Connection connection = null;
 	PreparedStatement statement = null;
 	public ResourceMaster searchEmployee(String enterpriseId) throws ClassNotFoundException, SQLException {
 		
@@ -103,11 +105,14 @@ public class DaoImplementation extends AbstractDao implements DaoFacade {
 		
 		return employeeObjects;
 	}
-	public ArrayList<String> getCalendarData(long employeeId, String month, int year) throws ClassNotFoundException, SQLException {
-		connection = DatabaseConnection.createConnection();
-		ArrayList<String> calendarData = new ArrayList<String>();
+	public CalendarData getCalendarData(long employeeId, String month, int year) throws ClassNotFoundException, SQLException {
 		int length = 0;
-		String query = "select * from "+month+year+" where employee_id = ?";
+		CalendarData calendarData = new CalendarData();
+		calendarData.setEmployeeId(employeeId);
+		calendarData.setMonth(month);
+		calendarData.setYear(year);
+		List<DayData> dayData = new ArrayList<DayData>();
+		Session session=getSession();
 		if(month.equalsIgnoreCase("january") || month.equalsIgnoreCase("march") || month.equalsIgnoreCase("may") || month.equalsIgnoreCase("july") || month.equalsIgnoreCase("august") || month.equalsIgnoreCase("october") || month.equalsIgnoreCase("december"))
 			length = 31;
 		else if(month.equalsIgnoreCase("april") || month.equalsIgnoreCase("june") || month.equalsIgnoreCase("september") || month.equalsIgnoreCase("november"))
@@ -123,19 +128,23 @@ public class DaoImplementation extends AbstractDao implements DaoFacade {
 			else
 				length = 28;
 		}
-		if(connection != null)
+		for(int i = 1  ; i <= length ; i++)
 		{
-			statement = connection.prepareStatement(query);
-			statement.setLong(1, employeeId);
-			ResultSet resultSet = statement.executeQuery();
-			resultSet.next();
-			for(int i = 2; i <= length + 1; i++)
+			Query query=session.createQuery("select e from  Timesheet e where employeeId=:empId and date=:date and month=:month and year=:year");
+			DayData day_Data = new DayData();
+			query.setParameter("empId", employeeId);
+			query.setParameter("date", i);
+			query.setParameter("month", month);
+			query.setParameter("year", year);
+			List<Timesheet> timesheet=query.list();
+			for(Timesheet time : timesheet)
 			{
-				calendarData.add(resultSet.getString(i));
+				day_Data.setDate(time.getDate());
+				day_Data.setShift(time.getShift());
 			}
-			
+			dayData.add(day_Data);
 		}
-		DatabaseConnection.closeConnection();
+		calendarData.setDayData(dayData);
 		return calendarData;
 	}
 	public ArrayList<ResourceMaster> allEmployeeDetails() throws ClassNotFoundException, SQLException {
@@ -202,18 +211,17 @@ public class DaoImplementation extends AbstractDao implements DaoFacade {
 		
 	}
 	public Map<String, Integer> statistics() throws ClassNotFoundException, SQLException {
-		// TODO Auto-generated method stub
-		  Date date = new Date();
 		  String[] monthName = { "january", "february", "march", "april", "may", "june", "july",
 			        "august", "september", "october", "november", "december" };
 		  int aCount = 0, bCount = 0, cCount = 0;
-		 // ArrayList<Integer> shiftCount = new ArrayList<Integer>();
 		  String shift=null;
-		  String month = monthName[date.getMonth()];
-		  int year = date.getYear();
+		  Calendar cal = Calendar.getInstance();
+		  String month = monthName[cal.get(Calendar.MONTH)];
+		  int year = cal.get(Calendar.YEAR);
 		  Session session=getSession();
-		  Query query=session.createQuery("select e from  Timesheet e where month=:month");
+		  Query query=session.createQuery("select e from  Timesheet e where month=:month and year=:year");
 		  query.setParameter("month", month);
+		  query.setParameter("year", year);
 		  List<Timesheet> empList=query.list();
 		  for(Timesheet shiftData : empList)
 		  {
@@ -225,14 +233,25 @@ public class DaoImplementation extends AbstractDao implements DaoFacade {
 				if(shift.equals("c"))
 					cCount++;				
 		  }
-		/*  shiftCount.add(aCount);
-		  shiftCount.add(bCount);
-		  shiftCount.add(cCount);*/
-		  Map<String,Integer> shiftCount = new HashMap<String, Integer>();
+		  Map<String,Integer> shiftCount = new HashMap<String, Integer>();	  
 		  shiftCount.put("shiftA", aCount);
 		  shiftCount.put("shiftB", bCount);
 		  shiftCount.put("shiftC", cCount);
 		return shiftCount;
+	}
+	public List<Project> getAllProjects() throws ClassNotFoundException, SQLException {
+		 Session session=getSession();
+		  Query query=session.createQuery("select e from Project e");
+		  List<Project> allProjectsData = query.list();
+		return allProjectsData;
+	}
+	public List<ResourceMaster> getEmployeeDetailsByProject(Integer projectId) throws ClassNotFoundException, SQLException {
+		Session session=getSession();
+		List<ResourceMaster> employeeObjects = new ArrayList<ResourceMaster>();
+		Query query=session.createQuery("select e from ResourceMaster e where projectId=:projId");
+		 query.setParameter("projId", projectId);
+		 employeeObjects = query.list();
+		return employeeObjects;
 	}
 
 }

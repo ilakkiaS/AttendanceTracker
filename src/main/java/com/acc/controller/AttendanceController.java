@@ -1,9 +1,12 @@
 package com.acc.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 //import java.security.Provider.Service;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,9 +26,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.acc.entity.CalendarData;
+import com.acc.entity.Project;
 import com.acc.entity.ResourceMaster;
 import com.acc.service.ServiceFacade;
 //import com.acc.service.ServiceImplementaion;
+import com.google.gson.Gson;
 
 @Controller
 public class AttendanceController {
@@ -171,15 +176,9 @@ public class AttendanceController {
 
 	}
 	
-	@RequestMapping(value = "getCalendarData.do", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<CalendarData> getCalendarData(HttpServletRequest request,HttpServletResponse response)
+	@RequestMapping(value = "getCalendarData.do", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public void getCalendarData(HttpServletRequest request,HttpServletResponse response) throws IOException
 	{
-		CalendarData cale = new CalendarData();
-		cale.setEmployeeId(123456);
-		cale.setMonth("may");
-		cale.setYear(1243);
-		System.out.println("insit");
-		/*ArrayList<ResourceMaster> employeeObjects = new ArrayList<ResourceMaster>();
 		 String[] monthName = { "january", "february", "march", "april", "may", "june", "july",
 			        "august", "september", "october", "november", "december" };
 		 Calendar cal = Calendar.getInstance();
@@ -187,32 +186,25 @@ public class AttendanceController {
 		int year = cal.get(Calendar.YEAR);
 		HttpSession session=request.getSession();
 		ResourceMaster resource = (ResourceMaster)session.getAttribute("resource");
-		long supervisorId = resource.getEmployeeId();
 		long employeeId = Long.parseLong(request.getParameter("employeeId"));
-		System.out.println(employeeId);
-		ServiceImplementaion service = new ServiceImplementaion();
-		ArrayList<String> calendarData = new ArrayList<String>();
-		ModelAndView modelandview = new ModelAndView();
-		calendarData = service.getCalendarData(employeeId,month,year);
-		System.out.println(calendarData);
-		//String[] calendarString = calendarData.toArray(new String[calendarData.size()]);
-		employeeObjects = service.approve(supervisorId);
-		modelandview.addObject("employeeObjects", employeeObjects);
-		modelandview.setViewName("approve");
-		session.setAttribute("calendarData", calendarData);*/
-		final HttpHeaders httpHeaders= new HttpHeaders();
-	    httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-		ResponseEntity<CalendarData> responseEntity = new ResponseEntity<CalendarData>(cale,httpHeaders,HttpStatus.OK);
-		return responseEntity;
+		CalendarData calendarData = new CalendarData();
+		calendarData = serv.getCalendarData(employeeId,month,year);
+		Gson gson = new Gson();
+		response.setContentType("application/json");
+		PrintWriter out = response.getWriter();
+		out.println(gson.toJson(calendarData));
 	}
 	@RequestMapping("/allEmployeeDetails.htm")
 	public ModelAndView allEmployeeDetails(HttpServletRequest request,HttpServletResponse response)
 	{
 		ModelAndView modelandview = new ModelAndView();
 		ArrayList<ResourceMaster> allEmployeesData = new ArrayList<ResourceMaster>();
+		List<Project> allProjectsData = new ArrayList<Project>(); 
 		allEmployeesData = serv.allEmployeeDetails();
+		allProjectsData = serv.getAllProjects();
 		modelandview.setViewName("employeeDetails");
-		modelandview.addObject("allEmployeesData", allEmployeesData);
+		modelandview.addObject("employeesData", allEmployeesData);
+		modelandview.addObject("allProjectsData", allProjectsData);
 		return modelandview;
 	}
 	@RequestMapping("/generateReport.htm")
@@ -288,6 +280,24 @@ public class AttendanceController {
 		Map<String, Integer> shiftCount = serv.statistics();
 		modelandview.setViewName("statistics");
 		modelandview.addObject("shiftCount", shiftCount);
+		return modelandview;
+	}
+	@RequestMapping(value = "getEmployeeDetailsByProject.do", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ModelAndView getEmployeeDetailsByProject(HttpServletRequest request,HttpServletResponse response) throws IOException
+	{
+		Integer projectId = Integer.parseInt(request.getParameter("projectId"));
+				System.out.println(projectId);
+		List<ResourceMaster> employeeObjects = new ArrayList<ResourceMaster>();
+		employeeObjects = serv.getEmployeeDetailsByProject(projectId);
+		for(ResourceMaster m : employeeObjects)
+			System.out.println(m.getEmployeeName());
+		/*Gson gson = new Gson();
+		response.setContentType("application/json");
+		PrintWriter out = response.getWriter();
+		out.println(gson.toJson(employeeObjects));*/
+		ModelAndView modelandview = new ModelAndView();
+		modelandview.setViewName("employeeDetails");
+		modelandview.addObject("employeesData", employeeObjects);
 		return modelandview;
 	}
 	

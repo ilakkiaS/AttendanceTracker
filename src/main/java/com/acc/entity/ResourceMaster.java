@@ -29,6 +29,14 @@ public class ResourceMaster {
 	String defaultShift;
 	@Column(name = "created_by")
 	String createdBy;
+	@Column(name = "project_id")
+	Integer projectId;
+	public Integer getProjectId() {
+		return projectId;
+	}
+	public void setProjectId(Integer projectId) {
+		this.projectId = projectId;
+	}
 	public String getCreatedBy() {
 		return createdBy;
 	}

@@ -237,19 +237,22 @@ $(document).ready(function() {
 	 $("#selectEmployee").change(function(event){ 
 		var selectEmployee = document.getElementById("selectEmployee");
 		var employeeId = selectEmployee.options[selectEmployee.selectedIndex].value;
+		alert(projectName)
 		event.preventDefault();
 		$.ajax({
 			url:"getCalendarData.do",
 			dataType: 'json',
-			data:employeeId,
+			data:{employeeId:employeeId},
 				/* accept: {
 	                  json: 'application/json'
 	            }, */
 
-			type:"GET",
+			type:"POST",
 			success: function(h) {
-				alert("sdf")
-			},
+				alert(h.year)
+				alert(h.month)
+				alert(h.employeeId)
+				},
 	            error: function (jqXHR, textStatus, errorThrown) {
 	            	alert(textStatus)
 	             alert(jqXHR.status)  
@@ -270,17 +273,7 @@ $(document).ready(function() {
 <c:forEach items="${calendarData}" var="item">
 	<input type = "hidden" id = "calendar" value = ${item} >
 </c:forEach>
-<%-- <div id="mySidenav" class="sidenav">
-		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-		<br/><br/>
-		<table>
-		<c:forEach items="${employeeObjects}" var="employeeObjects">
-			<tr><td><a href="getCalendarData.htm?employeeId=${employeeObjects.employeeId}">${employeeObjects.employeeName}</a></td></tr>
-		</c:forEach>
-		</table>
-	
-	</div> --%>
-<!-- 	<form name = "selectEmployeeForm" id = "selectEmployeeForm" action="getCalendarData.htm"> -->
+
 	<input type="hidden" name="employeeId" id="employeeId">
 	<div id = "selectEmployeeDiv">
  		<select onchange="employeeSelect()" id = "selectEmployee">
